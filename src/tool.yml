@@ -1,25 +1,17 @@
 tools:
-  foobar:
-    title: Foo Bar
-    description: A dummy tool to exemplify the YAML file
-    version: 0.1
+  profile:
+    title: Dataset Profile
+    description: | 
+      Create a HTML or JSON profiling report for any kind of tabular data.
+      This image is Python and uses pandas-profiling: https://pypi.org/project/pandas-profiling/
+    version: 0.2
     parameters:
-      foo_int: 
-        type: integer
-      foo_float:
-        type: float
-      foo_string:
-        type: string
-      foo_enum:
-        type: enum
-        values:
-          - foo
-          - bar
-          - baz
-      foo_array:
-        type: integer
-        array: true
-      foo_matrix:
+      data: 
         type: file
-      foo_csv:
-        type: file
+        description: |
+          A CSV file containing the tabular data. From Python SDK, you can pass any pandas.DataFrame.
+          It is also possible to pass other file formats, but this is still
+      options:
+        type: dict
+        description: Experimental. Do not use.
+
