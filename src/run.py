@@ -5,10 +5,10 @@ from pandas_profiling import ProfileReport
 import numpy as np
 import pandas as pd
 
-from toolbox_runner.parameter import parse_parameter
+from json2args import get_parameter
 
 # parse parameters
-kwargs = parse_parameter()
+kwargs = get_parameter()
 
 # check if a toolname was set in env
 toolname = os.environ.get('TOOL_RUN', 'profile').lower()
