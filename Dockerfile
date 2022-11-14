@@ -2,7 +2,7 @@
 FROM python:3.10
 
 # install the toolbox runner tools
-RUN pip install toolbox-runner==0.5.0
+RUN pip install json2args==0.3.0
 
 
 # install pandas and pandas-profiling
