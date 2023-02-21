@@ -49,7 +49,7 @@ if toolname == 'profile':
     profile.to_file('/out/report.html')
     js = profile.to_json()
 
-    with open('/out/report.json') as f:
+    with open('/out/report.json', 'w') as f:
         f.write(js)    
 
 
