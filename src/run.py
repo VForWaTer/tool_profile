@@ -1,55 +1,57 @@
 import os
 from datetime import datetime as dt
+from pathlib import Path
 
-from pandas_profiling import ProfileReport
-import numpy as np
+from ydata_profiling import ProfileReport
 import pandas as pd
 
 from json2args import get_parameter
+from json2args.data import get_data_paths
 
 # parse parameters
-kwargs = get_parameter()
+parameter = get_parameter()
 
 # check if a toolname was set in env
 toolname = os.environ.get('TOOL_RUN', 'profile').lower()
 
 
-def load_data(df_or_path):
-    if isinstance(df_or_path, str):
-        # oi
-        path = kwargs['data']
-        _, ext = os.path.splitext(path)
+def load_data():
+    # get the paths
+    data_paths = get_data_paths()
+    
+    # extract the dataframe path
+    df_path = data_paths['dataframe']
 
-        # check some endings
-        if ext.lower() in ('.xls', '.xlsx', '.odf', '.ods'):
-            data = pd.read_excel(df_or_path)
-        elif ext.lower() in ('.asc', '.dat', '.mat', '.txt'):
-            data = pd.read_table(df_or_path, comment='#')
-        else:
-            raise AttributeError('Got a file path, but the extension is not (yet) supported.')
-    elif isinstance(df_or_path, (np.ndarray, pd.Series)):
-        data = pd.DataFrame(df_or_path)
-    elif isinstance(df_or_path, pd.DataFrame):
-        data = df_or_path
-    else:
-        raise AttributeError(f"The passed data was of type {type(df_or_path)} which is not supported.")
-    return data
+    # check the extension
+    ext = Path(df_path).suffix.lower()
+
+    if ext == '.csv':
+        data = pd.read_csv(df_path)
+    elif ext == '.parquet':
+        data = pd.read_parquet(df_path)
+
+    return Path(df_path).stem, data
 
 
 # switch the tool
 if toolname == 'profile':
     # kwargs data will automatically be loaded as a Dataframe. If it is still a string, try
     # to figure out what this is.
-    df = load_data(kwargs['data'])
-    del kwargs['data']
+    name, df = load_data()
+    
 
-    profile = ProfileReport(df, title="Dataset Report")
+    profile = ProfileReport(
+        df,
+        title=parameter.get('title', "Dataset Report"),
+        dark_mode=parameter['dark_mode'],
+        tsmode=parameter['has_timeseries'],
+    )
 
     # generate the output
-    profile.to_file('/out/report.html')
+    profile.to_file(f"/out/{name}_report.html")
     js = profile.to_json()
 
-    with open('/out/report.json', 'w') as f:
+    with open(f"/out/{name}_report.json", 'w') as f:
         f.write(js)    
 
 
