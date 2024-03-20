@@ -1,0 +1,12 @@
+{
+    "profile": {
+        "parameters": {
+            "title": "IRIS Dataset",
+            "dark_mode": true,
+            "has_timeseries": false
+        },
+        "data": {
+            "dataframe": "/in/dataframe.csv"
+        }
+    }
+}
