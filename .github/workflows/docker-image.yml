@@ -36,9 +36,10 @@ jobs:
             images: ghcr.io/vforwater/tbr_profile
 
         - name: Build and push
-          uses: docker/build-push-action@v3
+          uses: docker/build-push-action@v5
           with:
             context: .
             push: true
+            platforms: linux/amd64,linux/arm64
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
