@@ -5,7 +5,7 @@ FROM python:3.12
 RUN pip install json2args==0.6.1
 
 # install pandas and pandas-profiling
-RUN pip install pandas==2.1.4 ydata-profiling==4.7.0 pyarrow==15.0.0
+RUN pip install setuptools==75.2.0 pandas==2.1.4 ydata-profiling==4.7.0 pyarrow==15.0.0
 
 # create the tool input structure
 RUN mkdir /in
